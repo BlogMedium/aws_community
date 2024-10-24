@@ -1,0 +1,31 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: devopsguru-eks-cluster
+  region: us-west-2  
+  version: "1.29"
+
+availabilityZones: ["us-west-2a", "us-west-2b"]  
+
+managedNodeGroups:
+  - name: managed-ng-private
+    privateNetworking: true
+    instanceType: t3.large
+    minSize: 3
+    desiredCapacity: 3
+    maxSize: 6
+    availabilityZones: "us-west-2a"
+    volumeSize: 20
+    labels: { role: worker }
+    tags:
+      nodegroup-role: worker
+
+cloudWatch:
+  clusterLogging:
+    enableTypes:  # Enable specific log types
+      - "api"
+      - "audit"
+      - "authenticator"
+      - "controllerManager"
+      - "scheduler"
